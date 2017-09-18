@@ -1,5 +1,6 @@
 package com.students.tests;
 import static com.jayway.restassured.RestAssured.given;
+import static org.junit.Assert.assertEquals;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,29 +18,34 @@ public class StudentPutTests {
 	
 	@BeforeClass
 	public static void init(){
-		RestAssured.baseURI="http://apidev.openagent.com.au/v1";
-		RestAssured.basePath="/VisitorREST/visitor";
+		RestAssured.baseURI="http://petstore.swagger.io/v2";
+		RestAssured.basePath="/pet";
 	}
 	
 	@Test
-	public void updateStudent() throws JSONException{
-//		Student student = new Student();
-//		student.setFirstName("Hhaa");
-//		student.setEmail("test@test.com");
-//		student.setProgramme("Jave");
+	public void updatePet() throws JSONException{
+
 		JSONObject jsonObj = new JSONObject()
-				.put("data", new JSONObject()
-						.put("gaclientid","sdf86.dsf76sdf")
-		                .put("userid",171976)
+				.put("id", 10)
+				.put("category", new JSONObject()
+						.put("name","gege")
+						.put("id",8)                
 						);
 		System.out.println(jsonObj);
 		Response response = given()
-				.contentType("application/json")
+				.contentType("application/json; charset=UTF-8")
 				.when()
 				.body(jsonObj.toString())
-		        .put("/35038");
+		        .put();
 		response.body().prettyPrint();
-		response.then().statusCode(200);
+		
+		Long statusCode = new Long(response.statusCode());
+		Long id=null;
+
+		if(statusCode.toString().equals("200")){		
+			id = new Long(response.body().jsonPath().getInt("id")); //How can i access name in category?
+			System.out.println(id);
+		}
 	}
 	
 
