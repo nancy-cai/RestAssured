@@ -12,7 +12,14 @@ import com.jayway.restassured.response.Response;
 import com.student.base.TestBase;
 import com.student.modal.Student;
 
-public class StudentPutTests extends TestBase {
+public class StudentPutTests {
+	
+	
+	@BeforeClass
+	public static void init(){
+		RestAssured.baseURI="http://apidev.openagent.com.au/v1";
+		RestAssured.basePath="/VisitorREST/visitor";
+	}
 	
 	@Test
 	public void updateStudent() throws JSONException{
@@ -21,15 +28,16 @@ public class StudentPutTests extends TestBase {
 //		student.setEmail("test@test.com");
 //		student.setProgramme("Jave");
 		JSONObject jsonObj = new JSONObject()
-                .put("firstName","Glebe")
-                .put("programme", "IT")
-                .put("email","tt@ww.ww");
-		
+				.put("data", new JSONObject()
+						.put("gaclientid","sdf86.dsf76sdf")
+		                .put("userid",171976)
+						);
+		System.out.println(jsonObj);
 		Response response = given()
 				.contentType("application/json")
 				.when()
 				.body(jsonObj.toString())
-		        .put("/2");
+		        .put("/35038");
 		response.body().prettyPrint();
 		response.then().statusCode(200);
 	}
